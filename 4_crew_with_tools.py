@@ -2,6 +2,7 @@ from dotenv import load_dotenv
 from crewai import LLM
 from crewai import Agent, Task, Crew
 from crewai.tools import BaseTool
+from crewai_tools import SerperDevTool
 
 llm = LLM(
     model="gemini/gemini-2.0-flash",
@@ -16,6 +17,7 @@ research_agent = Agent(
     goal="Research interesting facts about the topic: {topic}",
     backstory="You are an expert at finding relevant and factual data.",
     verbose=True,
+    tools=[SerperDevTool()],
     llm=llm
 )
 
@@ -40,6 +42,8 @@ task2 = Task(
     agent=writer_agent,
     context=[task1],
 )
+
+
 #--------------------------------Crew--------------------------------#
 crew = Crew(
     agents=[research_agent, writer_agent],
